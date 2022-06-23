@@ -3,7 +3,6 @@ package com.example.alurachallenge
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,11 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.alurachallenge.ui.theme.AluraChallengeTheme
 
 class MainActivity : ComponentActivity() {
@@ -54,7 +55,8 @@ class MainActivity : ComponentActivity() {
                                         bottomStart = 16.dp,
                                         bottomEnd = 16.dp
                                     )
-                                ).height(boxHeight)
+                                )
+                                .height(boxHeight)
                         ) {
                             Avatar(imageHeight)
 
@@ -79,8 +81,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Avatar(height: Dp) {
-    Image(
-        painter = painterResource(id = R.drawable.profile),
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data("https://avatars.githubusercontent.com/u/48557266?v=4")
+            .crossfade(true)
+            .build(),
         contentDescription = "Avatar",
         modifier = Modifier
             .offset(y = height / 2)
