@@ -1,6 +1,7 @@
 package com.example.alurachallenge
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -21,60 +22,88 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.alurachallenge.models.Profile
+import com.example.alurachallenge.retrofit.RetrofitConfig
 import com.example.alurachallenge.ui.theme.AluraChallengeTheme
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getProfile()
         setContent {
-            AluraChallengeTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+            ProfileScreen()
+        }
+    }
+
+    @Composable
+    private fun ProfileScreen() {
+        AluraChallengeTheme {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colors.background
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        val boxHeight = remember {
-                            150.dp
-                        }
-
-                        val imageHeight = remember {
-                            boxHeight
-                        }
-
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(180.dp)
-                                .background(
-                                    Color.Cyan, shape = RoundedCornerShape(
-                                        bottomStart = 16.dp,
-                                        bottomEnd = 16.dp
-                                    )
-                                )
-                                .height(boxHeight)
-                        ) {
-                            Avatar(imageHeight)
-
-                        }
-                        Spacer(modifier = Modifier.height(imageHeight / 2))
-                        Text(
-                            text = "Carlos Henrique Matos Borges",
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Text(text = "CarlosHenr1que")
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Text(text = "Mobile Software Developer")
-                        Text(text = "at Compass")
+                    val boxHeight = remember {
+                        150.dp
                     }
+
+                    val imageHeight = remember {
+                        boxHeight
+                    }
+
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                            .background(
+                                Color.Cyan, shape = RoundedCornerShape(
+                                    bottomStart = 16.dp,
+                                    bottomEnd = 16.dp
+                                )
+                            )
+                            .height(boxHeight)
+                    ) {
+                        Avatar(imageHeight)
+
+                    }
+                    Spacer(modifier = Modifier.height(imageHeight / 2))
+                    Text(
+                        text = "Carlos Henrique Matos Borges",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(text = "CarlosHenr1que")
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(text = "Mobile Software Developer")
+                    Text(text = "at Compass")
                 }
             }
+        }
+    }
+
+    private fun getProfile() {
+        lifecycleScope.launch {
+            val call = RetrofitConfig().profileService().list("CarlosHenr1que")
+            call.enqueue(object : Callback<Profile?> {
+                override fun onResponse(call: Call<Profile?>, response: Response<Profile?>) {
+                    response.body()?.let { Log.d("response", it.name) }
+                }
+
+                override fun onFailure(call: Call<Profile?>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+            })
         }
     }
 }
