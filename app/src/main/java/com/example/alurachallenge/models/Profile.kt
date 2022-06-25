@@ -1,5 +1,6 @@
 package com.example.alurachallenge.models
 
+import com.example.alurachallenge.ui.screen.ProfileUiState
 import com.google.gson.annotations.SerializedName
 
 data class Profile(
@@ -9,3 +10,12 @@ data class Profile(
     val name: String,
     val bio: String
 )
+
+fun Profile.toProfileUiState(): ProfileUiState {
+    return ProfileUiState(
+        user = login,
+        image = avatar,
+        name = name,
+        bio = bio
+    )
+}
