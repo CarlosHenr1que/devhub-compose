@@ -2,12 +2,13 @@ package com.example.alurachallenge.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,16 +22,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.alurachallenge.models.toProfileUiState
+import com.example.alurachallenge.models.Repository
 import com.example.alurachallenge.retrofit.webclient.GitHubWebClient
+import com.example.alurachallenge.ui.components.RepositoryCard
 
 @Composable
 fun ProfileScreen(username: String, webClient: GitHubWebClient = GitHubWebClient()) {
-    val foundUser by webClient.findProfileByUsername(username)
-        .collectAsState(initial = null)
-    foundUser?.let { userProfile ->
-        Profile(state = userProfile.toProfileUiState())
+    val uiState = webClient.uiState
+    LaunchedEffect(null) {
+        webClient.findProfileByUsername(username)
     }
+    Profile(state = uiState)
 }
 
 @Composable
@@ -50,6 +52,26 @@ fun Avatar(height: Dp, url: String) {
 
 @Composable
 private fun Profile(state: ProfileUiState) {
+    LazyColumn {
+        item {
+            ProfileHeader(state)
+        }
+        item {
+            if (state.repositories.isNotEmpty()) {
+                Text(
+                    text = "Repositories", Modifier.padding(8.dp),
+                    fontSize = 24.sp
+                )
+            }
+        }
+        items(state.repositories) {
+            RepositoryCard(repo = it)
+        }
+    }
+}
+
+@Composable
+private fun ProfileHeader(state: ProfileUiState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -108,5 +130,6 @@ data class ProfileUiState(
     val user: String = "",
     val image: String = "",
     val name: String = "",
-    val bio: String = ""
+    val bio: String = "",
+    val repositories: List<Repository> = emptyList()
 )

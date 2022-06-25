@@ -1,6 +1,6 @@
 package com.example.alurachallenge.retrofit
 
-import com.example.alurachallenge.retrofit.services.ProfileService
+import com.example.alurachallenge.retrofit.services.GitHubService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -14,5 +14,5 @@ class RetrofitConfig {
             .build()
     }
 
-    fun profileService(): ProfileService = retrofit.create(ProfileService::class.java)
+    fun profileService(): GitHubService = retrofit.create(GitHubService::class.java)
 }
