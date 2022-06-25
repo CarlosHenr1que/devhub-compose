@@ -126,6 +126,32 @@ fun ProfilePreview() {
     )
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ProfileWithRepositoriesPreview() {
+    Profile(
+        state = ProfileUiState(
+            user = "CarlosHenr1que",
+            image = "https://avatars.githubusercontent.com/u/48557266?v=4",
+            name = "Carlos henrique",
+            bio = "Mobile Software Develoer at Compass UOL",
+            repositories = listOf(
+                Repository(
+                    name = "github-compose"
+                ),
+                Repository(
+                    name = "ceep-compose",
+                    description = "Sample project to practice the Jetpack Compose Apps"
+                ),
+                Repository(
+                    name = "orgs-jetpack-compose",
+                    description = "Projeto de simulação do e-commerce de produtos naturais com a finalidade de treinar o Jetpack Compose"
+                )
+            )
+        )
+    )
+}
+
 data class ProfileUiState(
     val user: String = "",
     val image: String = "",
