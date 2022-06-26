@@ -6,6 +6,11 @@
   Aplicação Mobile desenvolvida em Android utilizando Jetpack Compose
 </h4>
 
+<div align="center">
+  <img src=".github/profile.png" width="200" height="400" />
+  &nbsp;
+  <img src=".github/repositories.png" width="200" height="400" />
+</div>
 
 ## Sobre o projeto 💡
 Esse projeto foi desenvolvido durante o evento #7DaysOfCode da Alura. O intuito desse evento é desenvolver uma aplicação durante 7 dias.
