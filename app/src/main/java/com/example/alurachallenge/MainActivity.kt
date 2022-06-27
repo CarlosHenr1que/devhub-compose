@@ -7,10 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.example.alurachallenge.ui.screen.ProfileScreen
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.alurachallenge.ui.navigation.SetupNavGraph
 import com.example.alurachallenge.ui.theme.AluraChallengeTheme
 
 class MainActivity : ComponentActivity() {
+    lateinit var navController: NavHostController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -19,7 +23,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ProfileScreen("CarlosHenr1que")
+                    navController = rememberNavController()
+                    SetupNavGraph(navController = navController)
                 }
             }
         }
