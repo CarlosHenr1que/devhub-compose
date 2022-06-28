@@ -7,9 +7,9 @@
 </h4>
 
 <div align="center">
-  <img src=".github/profile.png" width="200" height="400" />
+  <img src=".github/account_screen.png" width="200" height="400" />
   &nbsp;
-  <img src=".github/repositories.png" width="200" height="400" />
+  <img src=".github/profile.png" width="200" height="400" />
 </div>
 
 ## Sobre o projeto 💡
