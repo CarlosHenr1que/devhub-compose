@@ -1,11 +1,11 @@
 package com.example.alurachallenge.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,7 +32,13 @@ fun ProfileScreen(username: String, webClient: GitHubWebClient = GitHubWebClient
     LaunchedEffect(null) {
         webClient.findProfileByUsername(username)
     }
-    Profile(state = uiState)
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color(0xFF24292E)
+    ) {
+        Profile(state = uiState)
+    }
+
 }
 
 @Composable
@@ -44,7 +50,6 @@ fun Avatar(height: Dp, url: String) {
             .build(),
         contentDescription = "Avatar",
         modifier = Modifier
-            .offset(y = height / 2)
             .size(height)
             .clip(CircleShape),
     )
@@ -59,7 +64,9 @@ private fun Profile(state: ProfileUiState) {
         item {
             if (state.repositories.isNotEmpty()) {
                 Text(
-                    text = "Repositories", Modifier.padding(8.dp),
+                    text = "Repositories",
+                    Modifier.padding(8.dp),
+                    color = Color.White,
                     fontSize = 24.sp
                 )
             }
@@ -72,45 +79,52 @@ private fun Profile(state: ProfileUiState) {
 
 @Composable
 private fun ProfileHeader(state: ProfileUiState) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val boxHeight = remember {
-            150.dp
-        }
+   Card( elevation = 12.dp,
+       backgroundColor = Color(0xFF24292E),
+       modifier = Modifier.padding(16.dp)) {
+       Row(
+           modifier = Modifier
+               .fillMaxWidth()
+               .height(180.dp)
+               .padding(16.dp),
+           horizontalArrangement = Arrangement.SpaceBetween,
+           verticalAlignment = Alignment.CenterVertically
 
-        val imageHeight = remember {
-            boxHeight
-        }
 
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(180.dp)
-                .background(
-                    Color.Cyan, shape = RoundedCornerShape(
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
-                )
-                .height(boxHeight)
-        ) {
-            Avatar(imageHeight, state.image)
-        }
-        Spacer(modifier = Modifier.height(imageHeight / 2))
-        Text(
-            text = state.name,
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(text = state.user)
-        Spacer(modifier = Modifier.height(10.dp))
-        state.bio?.let {
-            Text(text = state.bio)
-        }
-    }
+       ) {
+           val boxHeight = remember {
+               100.dp
+           }
+
+           val imageHeight = remember {
+               boxHeight
+           }
+
+           Box(
+               modifier = Modifier
+                   .height(180.dp)
+                   .height(boxHeight),
+               contentAlignment = Alignment.Center
+
+           ) {
+               Avatar(imageHeight, state.image)
+           }
+           Spacer(modifier = Modifier.width(10.dp))
+           Column {
+               Text(
+                   text = state.name,
+                   color = Color.White,
+                   fontSize = 22.sp,
+                   fontWeight = FontWeight.Bold
+               )
+               Text(text = state.user, color = Color.White,    fontSize = 10.sp)
+               Spacer(modifier = Modifier.height(10.dp))
+               state.bio?.let {
+                   Text(text = state.bio, color = Color.White, fontSize = 14.sp)
+               }
+           }
+       }
+   }
 }
 
 @Preview(showBackground = true)
@@ -137,11 +151,15 @@ fun ProfileWithRepositoriesPreview() {
             bio = "Mobile Software Develoer at Compass UOL",
             repositories = listOf(
                 Repository(
-                    name = "github-compose"
+                    name = "github-compose",
+                    stars = "32",
+                    language = "TypeScript"
                 ),
                 Repository(
                     name = "ceep-compose",
-                    description = "Sample project to practice the Jetpack Compose Apps"
+                    description = "Sample project to practice the Jetpack Compose Apps",
+                    stars = "500",
+                    language = "Kotlin"
                 ),
                 Repository(
                     name = "orgs-jetpack-compose",
